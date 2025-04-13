@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaSeedling, FaBars, FaTimes } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -16,17 +17,27 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Nav */}
-        <ul className="hidden md:flex space-x-8 text-md font-medium">
-          <li className="hover:bg-white hover:text-green-700 px-3 py-1 rounded transition duration-300">
-            <a href="#">Home</a>
-          </li>
-          <li className="hover:bg-white hover:text-green-700 px-3 py-1 rounded transition duration-300">
-            <a href="#">Dashboard</a>
-          </li>
-          <li className="hover:bg-white hover:text-green-700 px-3 py-1 rounded transition duration-300">
-            <a href="#">About</a>
-          </li>
-        </ul>
+        <div className="hidden md:flex items-center space-x-6 text-md font-medium">
+          <Link to="/" className="hover:bg-white hover:text-green-700 px-3 py-1 rounded transition">
+            Home
+          </Link>
+          <Link to="/dashboard" className="hover:bg-white hover:text-green-700 px-3 py-1 rounded transition">
+            Dashboard
+          </Link>
+          <Link to="/about" className="hover:bg-white hover:text-green-700 px-3 py-1 rounded transition">
+            About
+          </Link>
+          <Link to="/login">
+            <button className="bg-white text-green-700 px-4 py-1 rounded hover:bg-green-100 transition">
+              Login
+            </button>
+          </Link>
+          <Link to="/signup">
+            <button className="bg-white text-green-700 px-4 py-1 rounded hover:bg-green-100 transition">
+              Sign Up
+            </button>
+          </Link>
+        </div>
 
         {/* Mobile Menu Icon */}
         <div className="md:hidden">
@@ -43,14 +54,30 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {menuOpen && (
         <ul className="md:hidden px-4 pb-4 space-y-3 bg-green-700 text-white text-md font-medium">
-          <li className="hover:bg-white hover:text-green-700 px-3 py-2 rounded transition duration-300">
-            <a href="#">Home</a>
+          <li>
+            <Link to="/" className="block hover:bg-white hover:text-green-700 px-3 py-2 rounded transition">
+              Home
+            </Link>
           </li>
-          <li className="hover:bg-white hover:text-green-700 px-3 py-2 rounded transition duration-300">
-            <a href="#">Dashboard</a>
+          <li>
+            <Link to="/dashboard" className="block hover:bg-white hover:text-green-700 px-3 py-2 rounded transition">
+              Dashboard
+            </Link>
           </li>
-          <li className="hover:bg-white hover:text-green-700 px-3 py-2 rounded transition duration-300">
-            <a href="#">About</a>
+          <li>
+            <Link to="/about" className="block hover:bg-white hover:text-green-700 px-3 py-2 rounded transition">
+              About
+            </Link>
+          </li>
+          <li>
+            <Link to="/login" className="block hover:bg-white hover:text-green-700 px-3 py-2 rounded transition">
+              Login
+            </Link>
+          </li>
+          <li>
+            <Link to="/signup" className="block hover:bg-white hover:text-green-700 px-3 py-2 rounded transition">
+              Sign Up
+            </Link>
           </li>
         </ul>
       )}
