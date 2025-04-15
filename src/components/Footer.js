@@ -1,9 +1,12 @@
-import React from 'react';
+import React from "react";
+import { useLanguage } from "../context/LanguageContext";
 
 const Footer = () => {
+  const { language, translations } = useLanguage();
+
   return (
-    <footer className="bg-green-800 text-white py-4 text-center mt-12">
-      <p>&copy; {new Date().getFullYear()} KrishiSarthi. All rights reserved.</p>
+    <footer className="bg-green-800 text-white text-center py-4">
+      <p>{translations[language].footer}</p>
     </footer>
   );
 };
