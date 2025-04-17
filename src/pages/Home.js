@@ -72,7 +72,7 @@ const Home = () => {
 
         {/* Features Section */}
         <section className="mt-12 mb-12">
-          <h2 className="text-2xl font-semibold text-green-900 mb-6 text-center">Features</h2>
+          <h2 className="text-2xl font-semibold text-green-900 mb-6 text-center">Explore Our Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 gap-y-6">
             {features.map((feature, i) => (
               <div
