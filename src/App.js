@@ -10,6 +10,7 @@ import Signup from "./pages/Signup"; // Import Signup
 import MarketPrices from "./components/MarketPrices"; // Import MarketPrices
 import WeatherCard from "./components/WeatherCard"; // Import WeatherCard
 import SchemeCards from "./components/SchemeCards"; // Import SchemeCards
+import CropManagement from "./components/CropManagement"; // Import CropManagement
 
 function App() {
   return (
@@ -20,12 +21,13 @@ function App() {
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/crop-management" element={<CropManagement />} /> {/* Add this route */}
               <Route path="/chat" element={<ChatbotPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/market-prices" element={<MarketPrices />} />
               <Route path="/weather-card" element={<WeatherCard />} />
-              <Route path="/government-schemes" element={<SchemeCards />} /> 
+              <Route path="/government-schemes" element={<SchemeCards />} />
               <Route path="/personalized-advice" element={<ChatbotPage />} />
             </Routes>
           </main>

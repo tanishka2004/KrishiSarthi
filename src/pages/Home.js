@@ -13,7 +13,7 @@ const Home = () => {
       title: 'Crop Management',
       desc: 'Real-time info on crop diseases and techniques.',
       icon: <FaSeedling className="text-green-600 text-3xl mb-2 mx-auto" />,
-      path: "/crop-management", // Add path for navigation
+      path: "/crop-management", // Ensure this matches the route in App.js
     },
     {
       title: 'Weather Updates',
