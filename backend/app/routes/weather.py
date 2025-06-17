@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 
 weather_bp = Blueprint("weather", __name__)
 
-API_KEY = "faa6f912f07408e8ae0d7524037dccda"
+API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
 @weather_bp.route("/", methods=["GET"])
 def get_weather():

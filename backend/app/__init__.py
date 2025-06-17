@@ -1,12 +1,17 @@
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
-from flask_migrate import Migrate  # ✅ Add this
+from flask_migrate import Migrate
+from dotenv import load_dotenv  # ✅ Add this
+
+load_dotenv()  # ✅ Load .env variables
+
 from config import Config
 
 db = SQLAlchemy()
 jwt = JWTManager()
-migrate = Migrate()  # ✅ Add this
+migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
@@ -14,7 +19,7 @@ def create_app():
 
     db.init_app(app)
     jwt.init_app(app)
-    migrate.init_app(app, db)  # ✅ Add this
+    migrate.init_app(app, db)
 
     from app.routes.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix="/auth")
