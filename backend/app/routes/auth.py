@@ -35,7 +35,7 @@ def login():
     user = User.query.filter_by(email=email).first()
     if user and user.check_password(password):
         expires = datetime.timedelta(days=7)
-        token = create_access_token(identity=user.id, expires_delta=expires)
+        token = create_access_token(identity=str(user.id), expires_delta=expires)
         return jsonify({
             "token": token,
             "user": {

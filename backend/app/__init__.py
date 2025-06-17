@@ -21,7 +21,10 @@ def create_app():
 
     from app.routes.crops import crops_bp
     app.register_blueprint(crops_bp, url_prefix="/crops")
-    
+
+    from app.routes.weather import weather_bp
+    app.register_blueprint(weather_bp, url_prefix="/weather")
+
     @app.route("/")
     def home():
         return {"message": "Welcome to KrishiSarthi backend 👩‍🌾"}
