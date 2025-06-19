@@ -4,3 +4,5 @@ backend/.env
 dist
 .DS_Store
 build
+__pycache__/
+*.pyc
