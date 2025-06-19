@@ -1,4 +1,5 @@
 import requests
+import os
 from flask import Blueprint, request, jsonify
 
 weather_bp = Blueprint("weather", __name__)

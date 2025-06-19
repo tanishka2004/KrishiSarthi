@@ -30,9 +30,17 @@ def create_app():
     from app.routes.weather import weather_bp
     app.register_blueprint(weather_bp, url_prefix="/weather")
 
+    from app.routes.market import market_bp
+    app.register_blueprint(market_bp, url_prefix="/market-trends")
+
+    from app.routes.schemes import schemes_bp
+    app.register_blueprint(schemes_bp, url_prefix="/schemes")
+
+
+
     @app.route("/")
     def home():
-        return {"message": "Welcome to KrishiSarthi backend 👩‍🌾"}
+        return {"message": "Welcome to KrishiSarthi backend"}
 
     @app.route("/health")
     def health():
