@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSeedling, FaCloudSunRain, FaChartLine, FaUniversity, FaRobot, FaMicrophone } from 'react-icons/fa';
-import bgImage from '../assets/farm.jpg'; // ✅ path to the background image
+import bgImage from '../assets/farm.jpg';
 import { useLanguage } from "../context/LanguageContext";
 
 const Home = () => {
@@ -10,38 +10,38 @@ const Home = () => {
 
   const features = [
     {
-      title: 'Crop Management',
-      desc: 'Real-time info on crop diseases and techniques.',
+      title: translations[language].cropManagement,
+      desc: translations[language].cropDesc,
       icon: <FaSeedling className="text-green-600 text-3xl mb-2 mx-auto" />,
-      path: "/crop-management", // Ensure this matches the route in App.js
+      path: "/crop-management",
     },
     {
-      title: 'Weather Updates',
-      desc: 'Accurate forecasts & tips for crops.',
+      title: translations[language].weather,
+      desc: translations[language].weatherDesc,
       icon: <FaCloudSunRain className="text-blue-500 text-3xl mb-2 mx-auto" />,
-      path: "/weather-card", // Add path for navigation
+      path: "/weather-card",
     },
     {
-      title: 'Market Insights',
-      desc: 'Know mandi rates & trends easily.',
+      title: translations[language].market,
+      desc: translations[language].marketDesc,
       icon: <FaChartLine className="text-purple-600 text-3xl mb-2 mx-auto" />,
-      path: "/market-prices", // Add path for navigation
+      path: "/market-prices",
     },
     {
-      title: 'Government Schemes',
-      desc: 'Stay updated on subsidies & yojnas.',
+      title: translations[language].schemes,
+      desc: translations[language].schemesDesc,
       icon: <FaUniversity className="text-yellow-600 text-3xl mb-2 mx-auto" />,
       path: "/government-schemes",
     },
     {
-      title: 'Personalized Advice',
-      desc: 'Get AI-based help as per your farming style.',
+      title: translations[language].advice,
+      desc: translations[language].adviceDesc,
       icon: <FaRobot className="text-gray-700 text-3xl mb-2 mx-auto" />,
       path: "/personalized-advice",
     },
     {
-      title: 'Text & Voice Input',
-      desc: 'Talk to FarmAid your way!',
+      title: translations[language].voice,
+      desc: translations[language].voiceDesc,
       icon: <FaMicrophone className="text-red-600 text-3xl mb-2 mx-auto" />,
       path: "/text-voice-input",
     },
@@ -52,15 +52,14 @@ const Home = () => {
       className="min-h-screen bg-cover bg-center bg-no-repeat relative"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
-      {/* White overlay for readability */}
       <div className="bg-white/30 p-6 pb-20">
         {/* Hero Section */}
         <section className="text-center py-10">
-          <h1 className="text-4xl md:text-5xl font-bold text-green-800">KrishiSarthi</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-green-800">
+            {translations[language].homeTitle}
+          </h1>
           <p className="text-lg mt-4 max-w-2xl mx-auto text-green-700">
-            {language === "en"
-              ? "Empowering Indian farmers with AI-driven solutions. Explore our chatbot and other features like crop management, weather updates, market insights, and more."
-              : "भारतीय किसानों को एआई-चालित समाधान प्रदान करना। हमारे चैटबॉट और अन्य सुविधाओं जैसे फसल प्रबंधन, मौसम अपडेट, बाजार अंतर्दृष्टि और अधिक का अन्वेषण करें।"}
+            {translations[language].homeDesc}
           </p>
           <button
             onClick={() => navigate('/chat')}
@@ -72,7 +71,9 @@ const Home = () => {
 
         {/* Features Section */}
         <section className="mt-12 mb-12">
-          <h2 className="text-2xl font-semibold text-green-900 mb-6 text-center">Explore Our Features</h2>
+          <h2 className="text-2xl font-semibold text-green-900 mb-6 text-center">
+            {translations[language].exploreFeatures}
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 gap-y-6">
             {features.map((feature, i) => (
               <div
@@ -83,10 +84,10 @@ const Home = () => {
                 <h3 className="text-xl font-bold text-green-800">{feature.title}</h3>
                 <p className="mt-2 text-green-700">{feature.desc}</p>
                 <button
-                  onClick={() => navigate(feature.path)} // Navigate to the respective page
+                  onClick={() => navigate(feature.path)}
                   className="mt-4 px-4 py-2 bg-green-800 text-white rounded-lg hover:bg-green-700 transition"
                 >
-                  Learn More
+                  {translations[language].learnMore}
                 </button>
               </div>
             ))}
