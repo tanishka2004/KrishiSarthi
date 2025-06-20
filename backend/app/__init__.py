@@ -3,7 +3,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
-from dotenv import load_dotenv  # ✅ Add this
+from dotenv import load_dotenv
+from flask_cors import CORS
 
 load_dotenv()  # ✅ Load .env variables
 
@@ -20,6 +21,8 @@ def create_app():
     db.init_app(app)
     jwt.init_app(app)
     migrate.init_app(app, db)
+    CORS(app)
+
 
     from app.routes.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix="/auth")
@@ -36,6 +39,8 @@ def create_app():
     from app.routes.schemes import schemes_bp
     app.register_blueprint(schemes_bp, url_prefix="/schemes")
 
+    from app.routes.dashboard import dashboard_bp
+    app.register_blueprint(dashboard_bp)
 
 
     @app.route("/")

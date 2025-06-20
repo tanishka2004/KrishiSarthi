@@ -11,6 +11,8 @@ import MarketPrices from "./components/MarketPrices"; // Import MarketPrices
 import WeatherCard from "./components/WeatherCard"; // Import WeatherCard
 import SchemeCards from "./components/SchemeCards"; // Import SchemeCards
 import CropManagement from "./components/CropManagement"; // Import CropManagement
+import Dashboard from "./components/Dashboard";
+
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
               <Route path="/weather-card" element={<WeatherCard />} />
               <Route path="/government-schemes" element={<SchemeCards />} />
               <Route path="/personalized-advice" element={<ChatbotPage />} />
+              <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
           </main>
           <Footer />
