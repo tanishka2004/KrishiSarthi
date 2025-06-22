@@ -4,14 +4,12 @@ from app.models import Crop, db
 
 crops_bp = Blueprint("crops", __name__)
 
+# ✅ Now Public
 @crops_bp.route('/', methods=['POST'])
-@crops_bp.route('', methods=['POST'])  # handles no trailing slash
-@jwt_required()
+@crops_bp.route('', methods=['POST'])
 def add_crop():
     data = request.get_json()
     print("🔍 Received JSON:", data)
-
-    user_id = get_jwt_identity()
 
     name = data.get("name") if data else None
     type_ = data.get("type") if data else None
@@ -19,12 +17,13 @@ def add_crop():
     if not name or not type_:
         return jsonify({"error": "Missing name or type"}), 400
 
-    crop = Crop(user_id=user_id, name=name, type=type_)
+    crop = Crop(name=name, type=type_)  # user_id left null
     db.session.add(crop)
     db.session.commit()
 
     return jsonify(crop.to_dict()), 201
 
+# ✅ Still public
 @crops_bp.route('/public', methods=['POST'])
 def add_public_crop():
     data = request.get_json()
@@ -40,6 +39,7 @@ def add_public_crop():
 
     return jsonify(crop.to_dict()), 201
 
+# ✅ Still protected
 @crops_bp.route('/', methods=['GET'])
 @jwt_required()
 def get_crops():
@@ -47,13 +47,13 @@ def get_crops():
     crops = Crop.query.filter_by(user_id=user_id).all()
     return jsonify([c.to_dict() for c in crops])
 
+# ✅ Public advice
 @crops_bp.route('/advice/<int:crop_id>', methods=['GET'])
 def get_advice(crop_id):
     crop = Crop.query.get(crop_id)
     if not crop:
         return jsonify({"error": "Crop not found"}), 404
 
-    # ✅ Hardcoded advice logic
     base_advice = {
         "Wheat": "Ensure timely irrigation and use nitrogen fertilizer in early growth.",
         "Rice": "Maintain proper water level, and watch for pest attacks during flowering.",

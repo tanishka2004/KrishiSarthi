@@ -55,7 +55,7 @@ const Home = () => {
       <div className="bg-white/30 p-6 pb-20">
         {/* Hero Section */}
         <section className="text-center py-10">
-          <h1 className="text-4xl md:text-5xl font-bold text-green-800">
+          <h1 className="typewriter text-4xl md:text-5xl font-bold text-green-800 inline-block">
             {translations[language].homeTitle}
           </h1>
           <p className="text-lg mt-4 max-w-2xl mx-auto text-green-700">
@@ -74,7 +74,7 @@ const Home = () => {
           <h2 className="text-2xl font-semibold text-green-900 mb-6 text-center">
             {translations[language].exploreFeatures}
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 gap-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-2">
             {features.map((feature, i) => (
               <div
                 key={i}

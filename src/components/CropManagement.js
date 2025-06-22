@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const CropManagement = () => {
   const [cropName, setCropName] = useState("");
@@ -7,40 +7,18 @@ const CropManagement = () => {
   const [advice, setAdvice] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // Fetch user's crops on mount
-  useEffect(() => {
-    const fetchCrops = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-      try {
-        const res = await fetch("/crops/", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setCrops(data);
-        }
-      } catch (err) {
-        // handle error
-      }
-    };
-    fetchCrops();
-  }, []);
-
-  // Add crop handler
+  // Add crop (no login required)
   const handleAddCrop = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    if (!token) return;
     try {
-      const res = await fetch("/crops/", {
+      const res = await fetch("http://localhost:5000/crops/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ name: cropName, type: cropType }),
       });
+
       if (res.ok) {
         const newCrop = await res.json();
         setCrops([...crops, newCrop]);
@@ -48,38 +26,32 @@ const CropManagement = () => {
         setCropType("");
       }
     } catch (err) {
-      // handle error
+      console.error("❌ Failed to add crop:", err);
     }
   };
 
-  // Get advice handler
+  // Get advice (no login required)
   const handleGetAdvice = async (cropId) => {
     setLoading(true);
-    const token = localStorage.getItem("token");
-    if (!token) return;
     try {
-      const res = await fetch(`/crops/advice/${cropId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(`http://localhost:5000/crops/advice/${cropId}`);
       if (res.ok) {
         const data = await res.json();
         setAdvice((prev) => ({ ...prev, [cropId]: data.advice }));
       }
     } catch (err) {
-      // handle error
+      console.error("❌ Failed to fetch advice:", err);
     }
     setLoading(false);
   };
 
   return (
     <div className="min-h-screen bg-green-100 p-6 pt-24">
-      {/* pt-24 adds space for navbar */}
       <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">
         <h1 className="text-3xl font-bold text-green-800 text-center mb-6">
           Crop Management
         </h1>
 
-        {/* How Crop Management Works Section */}
         <div className="mb-8 bg-green-50 border border-green-200 rounded-lg p-4 shadow">
           <h2 className="text-lg font-semibold text-green-700 mb-2">
             How does Crop Management work?
@@ -95,18 +67,15 @@ const CropManagement = () => {
               <strong>Get expert advice:</strong> Click "Get Advice" for any crop to receive personalized tips powered by AI.
             </li>
             <li>
-              <strong>Secure & personalized:</strong> All your crop data is securely linked to your account.
+              <strong>No login required:</strong> You can use this feature freely!
             </li>
           </ul>
           <p className="mt-2 text-sm text-gray-500">
-            Example: Add "Wheat" as crop name and "Rabi" as crop type, then get tailored advice for your wheat crop.
+            Example: Add "Wheat" as crop name and "Rabi" as crop type, then get tailored advice.
           </p>
         </div>
 
-        <form
-          className="flex flex-col md:flex-row gap-4 mb-8"
-          onSubmit={handleAddCrop}
-        >
+        <form className="flex flex-col md:flex-row gap-4 mb-8" onSubmit={handleAddCrop}>
           <input
             type="text"
             placeholder="Crop Name"
