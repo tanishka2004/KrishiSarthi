@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useLanguage } from "../context/LanguageContext";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CropManagement = () => {
   const [cropName, setCropName] = useState("");
@@ -6,16 +9,15 @@ const CropManagement = () => {
   const [crops, setCrops] = useState([]);
   const [advice, setAdvice] = useState({});
   const [loading, setLoading] = useState(false);
+  const { language, translations } = useLanguage();
+  const t = translations[language];
 
-  // Add crop (no login required)
   const handleAddCrop = async (e) => {
     e.preventDefault();
     try {
       const res = await fetch("http://localhost:5000/crops/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: cropName, type: cropType }),
       });
 
@@ -24,13 +26,16 @@ const CropManagement = () => {
         setCrops([...crops, newCrop]);
         setCropName("");
         setCropType("");
+        toast.success(language === "en" ? "Crop added successfully!" : "फसल सफलतापूर्वक जोड़ी गई!");
+      } else {
+        toast.error(language === "en" ? "Failed to add crop." : "फसल जोड़ने में विफल।");
       }
     } catch (err) {
-      console.error("❌ Failed to add crop:", err);
+      console.error(err);
+      toast.error(language === "en" ? "Error occurred while adding crop." : "फसल जोड़ते समय त्रुटि हुई।");
     }
   };
 
-  // Get advice (no login required)
   const handleGetAdvice = async (cropId) => {
     setLoading(true);
     try {
@@ -38,47 +43,43 @@ const CropManagement = () => {
       if (res.ok) {
         const data = await res.json();
         setAdvice((prev) => ({ ...prev, [cropId]: data.advice }));
+        toast.success(language === "en" ? "Advice fetched!" : "सलाह प्राप्त हुई!");
+      } else {
+        toast.error(language === "en" ? "Failed to get advice." : "सलाह प्राप्त करने में विफल।");
       }
     } catch (err) {
-      console.error("❌ Failed to fetch advice:", err);
+      console.error(err);
+      toast.error(language === "en" ? "Error fetching advice." : "सलाह लाते समय त्रुटि हुई।");
     }
     setLoading(false);
   };
 
   return (
     <div className="min-h-screen bg-green-100 p-6 pt-24">
+      <ToastContainer position="top-center" autoClose={3000} />
+
       <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">
         <h1 className="text-3xl font-bold text-green-800 text-center mb-6">
-          Crop Management
+          {t.cropManagementTitle}
         </h1>
 
         <div className="mb-8 bg-green-50 border border-green-200 rounded-lg p-4 shadow">
           <h2 className="text-lg font-semibold text-green-700 mb-2">
-            How does Crop Management work?
+            {t.howItWorks}
           </h2>
           <ul className="list-disc pl-6 text-gray-700 space-y-1">
-            <li>
-              <strong>Add your crops:</strong> Enter the crop name and type you are growing.
-            </li>
-            <li>
-              <strong>Track your crops:</strong> See a list of all crops you have added.
-            </li>
-            <li>
-              <strong>Get expert advice:</strong> Click "Get Advice" for any crop to receive personalized tips powered by AI.
-            </li>
-            <li>
-              <strong>No login required:</strong> You can use this feature freely!
-            </li>
+            <li><strong>{t.addYourCrops}:</strong> {t.addYourCropsDesc}</li>
+            <li><strong>{t.trackCrops}:</strong> {t.trackCropsDesc}</li>
+            <li><strong>{t.getAdvice}:</strong> {t.getAdviceDesc}</li>
+            <li><strong>{t.secureData}:</strong> {t.secureDataDesc}</li>
           </ul>
-          <p className="mt-2 text-sm text-gray-500">
-            Example: Add "Wheat" as crop name and "Rabi" as crop type, then get tailored advice.
-          </p>
+          <p className="mt-2 text-sm text-gray-500">{t.example}</p>
         </div>
 
         <form className="flex flex-col md:flex-row gap-4 mb-8" onSubmit={handleAddCrop}>
           <input
             type="text"
-            placeholder="Crop Name"
+            placeholder={t.cropManagementTitle}
             className="p-2 border rounded"
             value={cropName}
             onChange={(e) => setCropName(e.target.value)}
@@ -86,7 +87,7 @@ const CropManagement = () => {
           />
           <input
             type="text"
-            placeholder="Crop Type"
+            placeholder={t.cropType || "Crop Type"}
             className="p-2 border rounded"
             value={cropType}
             onChange={(e) => setCropType(e.target.value)}
@@ -96,15 +97,13 @@ const CropManagement = () => {
             type="submit"
             className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
           >
-            Add Crop
+            {t.addCropBtn}
           </button>
         </form>
 
-        <h2 className="text-xl font-semibold text-green-700 mb-4">
-          Your Crops
-        </h2>
+        <h2 className="text-xl font-semibold text-green-700 mb-4">{t.yourCrops}</h2>
         {crops.length === 0 ? (
-          <p className="text-gray-600">No crops added yet.</p>
+          <p className="text-gray-600">{t.noCrops}</p>
         ) : (
           <div className="space-y-4">
             {crops.map((crop) => (
@@ -122,12 +121,12 @@ const CropManagement = () => {
                     className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
                     disabled={loading}
                   >
-                    {loading ? "Loading..." : "Get Advice"}
+                    {loading ? t.loading : t.getAdvice}
                   </button>
                 </div>
                 {advice[crop.id] && (
                   <div className="mt-2 p-2 bg-blue-50 rounded text-blue-800">
-                    <strong>Advice:</strong> {advice[crop.id]}
+                    <strong>{t.adviceLabel}:</strong> {advice[crop.id]}
                   </div>
                 )}
               </div>

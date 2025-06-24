@@ -29,6 +29,24 @@ const translations = {
     login: "Login",
     signup: "Sign Up",
     footer: "© 2025 KrishiSarthi. All rights reserved.",
+    // ✅ Crop Management Page
+    cropManagementTitle: "Crop Management",
+    howItWorks: "How does Crop Management work?",
+    addYourCrops: "Add your crops",
+    addYourCropsDesc: "Enter the crop name and type you are growing.",
+    trackCrops: "Track your crops",
+    trackCropsDesc: "See a list of all crops you have added.",
+    getAdvice: "Get expert advice",
+    getAdviceDesc: "Click 'Get Advice' for any crop to receive personalized tips powered by AI.",
+    secureData: "Secure & personalized",
+    secureDataDesc: "All your crop data is securely linked to your account.",
+    example: "Example: Add 'Wheat' as crop name and 'Rabi' as crop type, then get tailored advice for your wheat crop.",
+    yourCrops: "Your Crops",
+    noCrops: "No crops added yet.",
+    adviceLabel: "Advice",
+    addCropBtn: "Add Crop",
+    loading: "Loading..."
+
   },
   hi: {
     homeTitle: "कृषि साथी",
@@ -56,6 +74,24 @@ const translations = {
     login: "लॉग इन",
     signup: "साइन अप",
     footer: "© 2025 कृषिसारथी। सर्वाधिकार सुरक्षित।",
+    // ✅ फसल प्रबंधन पेज
+    cropManagementTitle: "फसल प्रबंधन",
+    howItWorks: "फसल प्रबंधन कैसे काम करता है?",
+    addYourCrops: "अपनी फसलें जोड़ें",
+    addYourCropsDesc: "आप जो फसल उगा रहे हैं उसका नाम और प्रकार दर्ज करें।",
+    trackCrops: "अपनी फसलें ट्रैक करें",
+    trackCropsDesc: "आपने जो फसलें जोड़ी हैं उनकी सूची देखें।",
+    getAdvice: "विशेषज्ञ सलाह प्राप्त करें",
+    getAdviceDesc: "'सलाह प्राप्त करें' पर क्लिक करें और फसल आधारित सुझाव प्राप्त करें।",
+    secureData: "सुरक्षित और व्यक्तिगत",
+    secureDataDesc: "आपका डेटा आपके खाते से सुरक्षित रूप से जुड़ा होता है।",
+    example: "उदाहरण: 'गेहूं' और 'रबी' जोड़ें और सुझाव प्राप्त करें।",
+    yourCrops: "आपकी फसलें",
+    noCrops: "अभी तक कोई फसल नहीं जोड़ी गई है।",
+    adviceLabel: "सलाह",
+    addCropBtn: "फसल जोड़ें",
+    loading: "लोड हो रहा है..."
+
   }
 };
 
