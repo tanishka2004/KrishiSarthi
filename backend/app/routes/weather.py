@@ -1,10 +1,13 @@
 import requests
 import os
 from flask import Blueprint, request, jsonify
+from dotenv import load_dotenv  # ✅
+
+load_dotenv()  # ✅ Load .env
 
 weather_bp = Blueprint("weather", __name__)
 
-API_KEY = os.getenv("OPENWEATHER_API_KEY")
+API_KEY = os.getenv("OPENWEATHER_API_KEY")  # Now this will work
 
 @weather_bp.route("/", methods=["GET"])
 def get_weather():
