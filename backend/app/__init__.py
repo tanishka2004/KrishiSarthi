@@ -34,7 +34,7 @@ def create_app():
     app.register_blueprint(weather_bp, url_prefix="/weather")
 
     from app.routes.market import market_bp
-    app.register_blueprint(market_bp, url_prefix="/market-trends")
+    app.register_blueprint(market_bp, url_prefix="/market")
 
     from app.routes.schemes import schemes_bp
     app.register_blueprint(schemes_bp, url_prefix="/schemes")

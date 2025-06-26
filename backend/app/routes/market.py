@@ -10,7 +10,9 @@ MOCK_PRICES = {
 }
 
 @market_bp.route("/", methods=["GET"])
+@market_bp.route("", methods=["GET"])  # Handle no trailing slash too
 def get_market_trends():
+
     crop = request.args.get("crop", "").lower()
 
     if not crop or crop not in MOCK_PRICES:

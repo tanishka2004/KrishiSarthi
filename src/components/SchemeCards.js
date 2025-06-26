@@ -1,81 +1,71 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { FaUniversity, FaInfoCircle, FaCheckCircle, FaExternalLinkAlt } from "react-icons/fa";
 
 const SchemeCards = () => {
-  const schemes = [
-    {
-      name: "Pradhan Mantri Fasal Bima Yojana",
-      description:
-        "Crop insurance scheme to provide financial support to farmers in case of crop failure due to natural calamities.",
-      benefits: [
-        "Covers crop loss due to natural disasters.",
-        "Affordable premium rates for farmers.",
-        "Encourages sustainable farming practices.",
-      ],
-    },
-    {
-      name: "Kisan Credit Card (KCC)",
-      description:
-        "Provides farmers with timely access to credit for agricultural needs like seeds, fertilizers, and equipment.",
-      benefits: [
-        "Low-interest loans for farmers.",
-        "Flexible repayment options.",
-        "Covers both short-term and long-term credit needs.",
-      ],
-    },
-    {
-      name: "Soil Health Card Scheme",
-      description:
-        "Helps farmers understand the health of their soil and provides recommendations for improving soil quality.",
-      benefits: [
-        "Promotes balanced use of fertilizers.",
-        "Improves crop productivity.",
-        "Reduces input costs for farmers.",
-      ],
-    },
-    {
-      name: "PM-Kisan Samman Nidhi",
-      description:
-        "Provides direct income support of ₹6,000 per year to small and marginal farmers.",
-      benefits: [
-        "Direct benefit transfer to farmers' bank accounts.",
-        "Supports small and marginal farmers.",
-        "Helps meet agricultural expenses.",
-      ],
-    },
-  ];
+  const [schemes, setSchemes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchSchemes = async () => {
+      try {
+        const res = await fetch("/schemes");
+        const data = await res.json();
+        if (res.ok) {
+          setSchemes(data);
+        } else {
+          setError("Failed to load schemes");
+        }
+      } catch (err) {
+        setError("Something went wrong");
+      }
+      setLoading(false);
+    };
+
+    fetchSchemes();
+  }, []);
 
   return (
-    <div className="min-h-screen bg-yellow-100 p-6">
-      <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-6">
-        <h1 className="text-3xl font-bold text-yellow-800 text-center mb-6">
-          Government Schemes
+    <div className="min-h-screen bg-green-100 p-6 pt-24">
+      <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-6">
+        <h1 className="text-3xl font-bold text-green-800 text-center mb-6 flex items-center justify-center gap-2">
+          <FaUniversity className="text-3xl" />
+          Government Schemes for Farmers
         </h1>
-        <p className="text-lg text-gray-700 text-center mb-6">
-          Stay updated on the latest government schemes, subsidies, and yojnas to support your farming journey.
+
+        <p className="text-center text-gray-700 mb-6 max-w-2xl mx-auto">
+          Explore central schemes offering financial assistance, insurance, subsidies, and credit to empower Indian farmers.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {schemes.map((scheme, index) => (
-            <div
-              key={index}
-              className="bg-yellow-50 border border-yellow-300 rounded-lg p-4 shadow-md hover:shadow-lg transition"
-            >
-              <h2 className="text-xl font-semibold text-yellow-800 mb-2">
-                {scheme.name}
-              </h2>
-              <p className="text-gray-700 mb-4">{scheme.description}</p>
-              <h3 className="text-lg font-medium text-yellow-700 mb-2">
-                Benefits:
-              </h3>
-              <ul className="list-disc list-inside text-gray-700">
-                {scheme.benefits.map((benefit, i) => (
-                  <li key={i} className="mb-1">
-                    {benefit}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+
+        {loading ? (
+          <p className="text-center text-gray-600">Loading...</p>
+        ) : error ? (
+          <p className="text-center text-red-600">{error}</p>
+        ) : (
+          <div className="space-y-6">
+            {schemes.map((scheme, index) => (
+              <div key={index} className="border border-green-200 rounded-xl p-5 shadow-sm bg-green-50">
+                <h2 className="text-2xl font-bold text-green-700 mb-2 flex items-center gap-2">
+                  <FaCheckCircle className="text-green-500" /> {scheme.name}
+                </h2>
+                <p className="text-gray-800 flex items-center gap-2 mb-2">
+                  <FaInfoCircle className="text-green-600" /> {scheme.description}
+                </p>
+                <p className="text-sm text-gray-600 mb-3">
+                  <strong>Eligibility:</strong> {scheme.eligibility}
+                </p>
+                <a
+                  href={scheme.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-700 hover:underline font-medium text-sm"
+                >
+                  Know More <FaExternalLinkAlt className="ml-1 text-xs" />
+                </a>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
