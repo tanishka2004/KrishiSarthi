@@ -1,67 +1,85 @@
-import React, { useEffect, useState } from "react";
-import { FaUniversity, FaInfoCircle, FaCheckCircle, FaExternalLinkAlt } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
 
 const SchemeCards = () => {
   const [schemes, setSchemes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [category, setCategory] = useState("");
+  const [state, setState] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const fetchSchemes = async () => {
+    setLoading(true);
+    try {
+      const query = new URLSearchParams();
+      if (category) query.append("category", category);
+      if (state) query.append("state", state);
+
+      const res = await fetch(`/schemes?${query.toString()}`);
+      const data = await res.json();
+      setSchemes(data);
+    } catch (err) {
+      console.error("Error fetching schemes:", err);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const fetchSchemes = async () => {
-      try {
-        const res = await fetch("/schemes");
-        const data = await res.json();
-        if (res.ok) {
-          setSchemes(data);
-        } else {
-          setError("Failed to load schemes");
-        }
-      } catch (err) {
-        setError("Something went wrong");
-      }
-      setLoading(false);
-    };
-
     fetchSchemes();
   }, []);
 
   return (
     <div className="min-h-screen bg-green-100 p-6 pt-24">
-      <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-6">
-        <h1 className="text-3xl font-bold text-green-800 text-center mb-6 flex items-center justify-center gap-2">
-          <FaUniversity className="text-3xl" />
-          Government Schemes for Farmers
+      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
+        <h1 className="text-3xl font-bold text-green-800 text-center mb-6">
+          Government Schemes
         </h1>
 
-        <p className="text-center text-gray-700 mb-6 max-w-2xl mx-auto">
-          Explore central schemes offering financial assistance, insurance, subsidies, and credit to empower Indian farmers.
-        </p>
+        {/* Filter Controls */}
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="p-2 border rounded w-full md:w-1/2"
+          >
+            <option value="">All Categories</option>
+            <option value="subsidy">Subsidy</option>
+            <option value="loan">Loan</option>
+            <option value="insurance">Insurance</option>
+            <option value="tech">Technology</option>
+          </select>
+          <input
+            type="text"
+            placeholder="Enter your state (e.g., MP, Maharashtra)"
+            className="p-2 border rounded w-full md:w-1/2"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+          />
+          <button
+            onClick={fetchSchemes}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          >
+            Apply Filters
+          </button>
+        </div>
 
+        {/* Scheme Cards */}
         {loading ? (
-          <p className="text-center text-gray-600">Loading...</p>
-        ) : error ? (
-          <p className="text-center text-red-600">{error}</p>
+          <p className="text-center text-gray-600">Loading schemes...</p>
+        ) : schemes.length === 0 ? (
+          <p className="text-center text-gray-600">No schemes found.</p>
         ) : (
-          <div className="space-y-6">
-            {schemes.map((scheme, index) => (
-              <div key={index} className="border border-green-200 rounded-xl p-5 shadow-sm bg-green-50">
-                <h2 className="text-2xl font-bold text-green-700 mb-2 flex items-center gap-2">
-                  <FaCheckCircle className="text-green-500" /> {scheme.name}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {schemes.map((scheme) => (
+              <div
+                key={scheme.id}
+                className="bg-green-50 p-4 rounded-lg shadow border border-green-200"
+              >
+                <h2 className="text-xl font-semibold text-green-800">
+                  {scheme.title}
                 </h2>
-                <p className="text-gray-800 flex items-center gap-2 mb-2">
-                  <FaInfoCircle className="text-green-600" /> {scheme.description}
+                <p className="text-gray-700 mt-2">{scheme.description}</p>
+                <p className="text-sm text-gray-600 mt-1">
+                  <strong>Category:</strong> {scheme.category} | <strong>State:</strong> {scheme.state}
                 </p>
-                <p className="text-sm text-gray-600 mb-3">
-                  <strong>Eligibility:</strong> {scheme.eligibility}
-                </p>
-                <a
-                  href={scheme.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-blue-700 hover:underline font-medium text-sm"
-                >
-                  Know More <FaExternalLinkAlt className="ml-1 text-xs" />
-                </a>
               </div>
             ))}
           </div>
