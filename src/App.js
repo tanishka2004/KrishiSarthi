@@ -12,6 +12,7 @@ import WeatherCard from "./components/WeatherCard"; // Import WeatherCard
 import SchemeCards from "./components/SchemeCards"; // Import SchemeCards
 import CropManagement from "./components/CropManagement"; // Import CropManagement
 import Dashboard from "./components/Dashboard";
+import About from "./pages/About"; // Import About
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
               <Route path="/government-schemes" element={<SchemeCards />} />
               <Route path="/personalized-advice" element={<ChatbotPage />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/about" element={<About />} />
             </Routes>
           </main>
           <Footer />
