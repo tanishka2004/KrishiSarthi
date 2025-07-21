@@ -41,6 +41,9 @@ def create_app():
 
     from app.routes.dashboard import dashboard_bp
     app.register_blueprint(dashboard_bp)
+    
+    from .routes.chatbot import chatbot_bp
+    app.register_blueprint(chatbot_bp, url_prefix="/chatbot")
 
 
     @app.route("/")

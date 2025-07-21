@@ -1,24 +1,53 @@
 import React, { useState } from "react";
 import { Mic, Send } from "lucide-react";
-import { useLanguage } from "../context/LanguageContext"; // Use global language context
+import { useLanguage } from "../context/LanguageContext";
 
 const Chatbot = () => {
-  const { language } = useLanguage(); // Access global language state
+  const { language } = useLanguage();
   const [input, setInput] = useState("");
   const [chats, setChats] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
 
-    const newChat = {
-      question: input,
-      answer: language === "en"
-        ? "This is a sample reply. AI will respond here."
-        : "यह एक नमूना उत्तर है। एआई यहां जवाब देगा।",
-    };
-
-    setChats([...chats, newChat]);
+    const userQuestion = input;
     setInput("");
+    setLoading(true);
+
+    // Add user question to chat
+    setChats((prevChats) => [
+      ...prevChats,
+      { question: userQuestion, answer: "..." },
+    ]);
+
+    try {
+      const res = await fetch("/chatbot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userQuestion, lang: language }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setChats((prevChats) => {
+          const newChats = [...prevChats];
+          newChats[newChats.length - 1].answer = data.reply;
+          return newChats;
+        });
+      } else {
+        throw new Error(data.error || "Failed to fetch reply");
+      }
+    } catch (err) {
+      setChats((prevChats) => {
+        const newChats = [...prevChats];
+        newChats[newChats.length - 1].answer = "❌ Something went wrong.";
+        return newChats;
+      });
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -55,10 +84,12 @@ const Chatbot = () => {
           }
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          disabled={loading}
         />
         <button
           onClick={handleSend}
           className="bg-green-600 text-white p-2 rounded-xl hover:bg-green-700"
+          disabled={loading}
         >
           <Send size={20} />
         </button>
